@@ -10,7 +10,7 @@
 
 #include <sstream>
 
-#define HASWELL
+// #define HASWELL
 
 namespace SPGrid{
 

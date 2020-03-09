@@ -65,6 +65,7 @@ auto convert_fem_solve = [](const std::vector<std::string> &parameters) {
   double min_density = 1, max_density = 0;
   bool has_nan = false;
   bool has_inf = false;
+
   for (auto &block : param.density.blocks) {
     for (auto d : block.data) {
       if (d != 0) {
@@ -97,6 +98,168 @@ auto convert_fem_solve = [](const std::vector<std::string> &parameters) {
 };
 
 TC_REGISTER_TASK(convert_fem_solve);
+
+auto fem_to_dict = [](const std::vector<std::string> &parameters) {
+
+
+
+
+
+
+  std::vector<std::vector<double>> patern = {
+      {0, 0, 0},
+      {0, 0, 1},
+      {0, 0, 2},
+      {0, 0, 3},
+      {0, 1, 0},
+      {0, 1, 1},
+      {0, 1, 2},
+      {0, 1, 3},
+      {0, 2, 0},
+      {0, 2, 1},
+      {0, 2, 2},
+      {0, 2, 3},
+      {0, 3, 0},
+      {0, 3, 1},
+      {0, 3, 2},
+      {0, 3, 3},
+      {1, 0, 0},
+      {1, 0, 1},
+      {1, 0, 2},
+      {1, 0, 3},
+      {1, 1, 0},
+      {1, 1, 1},
+      {1, 1, 2},
+      {1, 1, 3},
+      {1, 2, 0},
+      {1, 2, 1},
+      {1, 2, 2},
+      {1, 2, 3},
+      {1, 3, 0},
+      {1, 3, 1},
+      {1, 3, 2},
+      {1, 3, 3},
+      {2, 0, 0},
+      {2, 0, 1},
+      {2, 0, 2},
+      {2, 0, 3},
+      {2, 1, 0},
+      {2, 1, 1},
+      {2, 1, 2},
+      {2, 1, 3},
+      {2, 2, 0},
+      {2, 2, 1},
+      {2, 2, 2},
+      {2, 2, 3},
+      {2, 3, 0},
+      {2, 3, 1},
+      {2, 3, 2},
+      {2, 3, 3},
+      {3, 0, 0},
+      {3, 0, 1},
+      {3, 0, 2},
+      {3, 0, 3},
+      {3, 1, 0},
+      {3, 1, 1},
+      {3, 1, 2},
+      {3, 1, 3},
+      {3, 2, 0},
+      {3, 2, 1},
+      {3, 2, 2},
+      {3, 2, 3},
+      {3, 3, 0},
+      {3, 3, 1},
+      {3, 3, 2},
+      {3, 3, 3}};
+
+  using namespace fem_interface;
+
+  TC_ASSERT(parameters.size() >= 1);
+  std::string file_name = parameters[0];
+
+  FEMInterface interface;
+  FEMInputs &param = interface.param;
+  BinaryInputSerializer reader;
+  reader.initialize(file_name);
+  reader(param);
+
+  double min_density = 1, max_density = 0;
+  bool has_nan = false;
+  bool has_inf = false;
+
+  int nblocks = 0;
+
+  auto file_path = std::experimental::filesystem::path(file_name);
+  auto file_name_only = file_path.filename();
+//  auto parent_dir = file_path.parent_path().parent_path();
+  auto parent_dir = file_path.parent_path();
+
+  auto target_file_path_string = parent_dir.concat("/" + file_name_only.string() + ".csv").string();
+
+  std::cout << target_file_path_string << std::endl;
+
+
+  std::ofstream of;
+  of.open(target_file_path_string);
+
+  for (auto &block : param.density.blocks) {
+//    std::cout << "["
+//    << block.base_coordinates[0] << ", "
+//    << block.base_coordinates[1] << ", "
+//    << block.base_coordinates[2] << ", "
+//    << "]" << std::endl;
+
+    int pn = 0;
+
+    for (auto d : block.data) {
+      auto p = patern[pn];
+      pn += 1;
+
+      if (d != 0) {
+        of
+            << p[0] + block.base_coordinates[0] << ", "
+            << p[1] + block.base_coordinates[1] << ", "
+            << p[2] + block.base_coordinates[2] << ", "
+            << d << std::endl;
+
+        min_density = std::min(min_density, d);
+        max_density = std::max(max_density, d);
+        has_nan = std::isnan(d) || has_nan;
+        has_inf = std::isinf(d) || has_inf;
+      }
+    }
+    nblocks += 1;
+//    if (nblocks > 3) {
+//      break;
+//    }
+//
+  }
+
+  of.close();
+
+
+  TC_P(min_density);
+  TC_P(max_density);
+  if (has_nan) {
+    TC_WARN("nan detected");
+  }
+  if (has_inf) {
+    TC_WARN("inf detected");
+  }
+  if (!has_nan && !has_inf) {
+    TC_INFO("Good. No nan nor inf detected.");
+  }
+
+  if (parameters.size() <= 1) {
+    param.density.blocks.clear();
+  }
+
+//  TextSerializer ser2;
+//  ser2("FEM Solve Parameters", param);
+//  ser2.write_to_file("human_readable.txt");
+};
+
+TC_REGISTER_TASK(fem_to_dict);
 
 auto test_exception = []() {
   try {
