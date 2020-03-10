@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set +e
+# set +e
 
 sudo apt-get install xorg-dev libglu1-mesa-dev
 sudo apt install libnlopt-dev
@@ -11,7 +11,7 @@ cp /content/gdrive/My\ Drive/intel_arch.tar.xz ./
 tar xvf intel_arch.tar.xz
 
 cp /content/gdrive/My\ Drive/taichi.tar ./
-tar xvf taichi.tar.xz
+tar xvf taichi.tar
 
 cd /content/taichi/projects/spgrid_topo_opt/ && git pull
 
@@ -29,5 +29,3 @@ export PATH=/content/taichi/bin/:$PATH
 ln -s /content/gdrive/My\ Drive/topoopt/outputs /content/taichi/
 
 cd /content/taichi/projects/spgrid_topo_opt/scripts && python3 opt_bridge.py
-
-#cd /content/taichi && ti build
