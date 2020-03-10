@@ -7,11 +7,15 @@ sudo apt install libnlopt-dev
 pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPython yapf distro requests PyQt5
 pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPython yapf distro requests PyQt5
 
-cp /content/gdrive/My\ Drive/intel_arch.tar.xz ./
-tar xvf intel_arch.tar.xz
+if [ ! -f /content/intel_arch.tar ]; then
+  cp /content/gdrive/My\ Drive/intel_arch.tar ./
+  tar xf intel_arch.tar
+fi
 
-cp /content/gdrive/My\ Drive/taichi.tar ./
-tar xvf taichi.tar
+if [ ! -f /content/taichi.tar ]; then
+  cp /content/gdrive/My\ Drive/taichi.tar ./
+  tar xf taichi.tar
+fi
 
 cd /content/taichi/projects/spgrid_topo_opt/ && git pull
 

@@ -3,7 +3,7 @@ import taichi as tc
 
 version = 8
 wireframe = False
-narrow_band = False
+narrow_band = True
 plane_force = True
 volume_fraction=0.08
 
