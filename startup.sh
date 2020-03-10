@@ -11,7 +11,7 @@ cp -r /content/spgrid_topo_opt /content/taichi/projects/
 # rm -rf /content/spgrid_topo_opt
 wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1LM-2ZztT1_iFccGFRQhR21Cj5wWktctv' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1LM-2ZztT1_iFccGFRQhR21Cj5wWktctv" -O intel_arch.tar.xz && rm -rf /tmp/cookies.txt
 
-!tar xf intel_arch.tar.xz
+tar xf intel_arch.tar.xz
 
 export CUDA_ARCH=50
 export TC_USE_DOUBLE=1
