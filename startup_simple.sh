@@ -8,8 +8,8 @@ pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPyt
 pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPython yapf distro requests PyQt5
 
 if [ ! -f /content/intel_arch.tar ]; then
-  cp /content/gdrive/My\ Drive/intel_arch.tar ./
-  tar xf intel_arch.tar
+  cp /content/gdrive/My\ Drive/intel_arch.tar.xz ./
+  tar xf intel_arch.tar.xz
 fi
 
 if [ ! -f /content/taichi.tar ]; then
