@@ -41,3 +41,6 @@ sp1.setData(size=voxels[:, 3]*10)
 sp1.setData(pxMode=True)
 
 view.update()
+
+
+vol = gl.GLVolumeItem()
