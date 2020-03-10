@@ -19,6 +19,7 @@ export LD_LIBRARY_PATH=/content/intel/sw_dev_tools/compilers_and_libraries_2020.
 export LD_LIBRARY_PATH=/content/intel/sw_dev_tools/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin/:$LD_LIBRARY_PATH
 export TC_MKL_PATH=/content/intel/sw_dev_tools/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/
 export INTEL_LICENSE_FILE=/content/intel/licenses/intel-sw-tools-license.lic
+
 cd /content/taichi/projects/spgrid_topo_opt/solver && make
 cd /content
 
@@ -32,12 +33,7 @@ sudo apt install libnlopt-dev
 
 cd /content/taichi && ti build
 
+rm -rf /content/taichi/outputs
+ln -s /content/gdrive/My\ Drive/topoopt/outputs /content/taichi/
+
 cd /content/taichi/projects/spgrid_topo_opt/scripts/ && python3 opt_bridge.py
-
-
-# export CUDA_ARCH=50
-# export TC_USE_DOUBLE=1
-# export LD_LIBRARY_PATH=/home/slovak/intel/sw_dev_tools/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/:$LD_LIBRARY_PATH
-# export LD_LIBRARY_PATH=/home/slovak/intel/sw_dev_tools/compilers_and_libraries_2020.0.166/linux/compiler/lib/intel64_lin/:$LD_LIBRARY_PATH
-# export TC_MKL_PATH=/home/slovak/intel/sw_dev_tools/compilers_and_libraries_2020.0.166/linux/mkl/lib/intel64_lin/
-

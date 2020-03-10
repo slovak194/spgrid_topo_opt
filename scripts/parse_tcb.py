@@ -1,6 +1,6 @@
+#!/usr/bin/env python3
 
-
-file_path = "/home/slovak/topoopt/taichi/outputs/topo_opt/bridge/task-2020-03-08-23-45-35-r09094__v8_r0256/fem/00999.tcb.zip.csv"
+file_path = "/home/slovak/Downloads/00004.tcb.zip.csv"
 
 import numpy as np
 
