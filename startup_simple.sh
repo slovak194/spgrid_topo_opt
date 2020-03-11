@@ -32,7 +32,7 @@ export PATH=/content/taichi/bin/:$PATH
 
 ln -s /content/gdrive/My\ Drive/topoopt/outputs /content/taichi/
 
-cd /content/taichi/projects/spgrid_topo_opt/scripts && python3 opt_bridge.py &> log.txt &
+#cd /content/taichi/projects/spgrid_topo_opt/scripts && python3 opt_bridge.py &> log.txt &
 
 #(
 #while true; do
