@@ -10,7 +10,7 @@ volume_fraction=0.08
 use_mirror = False
 
 # Initialize
-n = 128
+n = 1024
 #tc.core.set_core_trigger_gdb_when_crash(True);
 opt = TopoOpt(res=(n, n, n), version=version, volume_fraction=volume_fraction,
               grid_update_start=5 if narrow_band else 1000000,
