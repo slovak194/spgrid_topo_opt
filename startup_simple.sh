@@ -41,12 +41,12 @@ cd /content/taichi/projects/spgrid_topo_opt/scripts && python3 opt_bridge.py &> 
 #done
 #)
 
-inotifywait -m ./ -e create -e moved_to |
-    while read dir action file; do
-        echo "The file '$file' appeared in directory '$dir' via '$action'"
-        inotifywait -m $dir/$file/fem/ -e create -e moved_to |
-            while read dir action file; do
-                echo "The file '$file' appeared in directory '$dir' via '$action'"
-                /home/slovak/topoopt/taichi/projects/spgrid_topo_opt/scripts/parse_tcb.py $dir/$file
-            done
-    done
+#inotifywait -m ./ -e create -e moved_to |
+#    while read dir action file; do
+#        echo "The file '$file' appeared in directory '$dir' via '$action'"
+#        inotifywait -m $dir/$file/fem/ -e create -e moved_to |
+#            while read dir action file; do
+#                echo "The file '$file' appeared in directory '$dir' via '$action'"
+#                /home/slovak/topoopt/taichi/projects/spgrid_topo_opt/scripts/parse_tcb.py $dir/$file
+#            done
+#    done
