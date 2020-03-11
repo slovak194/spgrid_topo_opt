@@ -3,6 +3,8 @@
 import sys
 import os
 
+import pickle as pcl
+
 import subprocess as sp
 import numpy as np
 
@@ -17,12 +19,12 @@ import pyqtgraph.opengl as gl
 # ipython = get_ipython()
 # if ipython is not None:
 #     ipython.magic("gui qt")
-#     tcb_file_path = "/home/slovak/Downloads/00145.tcb.zip"
+tcb_file_path = "/home/slovak/Downloads/00145.tcb.zip"
     # tcb_file_path = \
     #     "/home/slovak/topoopt/taichi/outputs/topo_opt/bridge/task-2020-03-11-10-30-51-r01108__v8_r0256/fem/00034.tcb.zip"
 # else:
 
-tcb_file_path = sys.argv[1]
+# tcb_file_path = sys.argv[1]
 
 csv_file_path = tcb_file_path + ".csv"
 bin_file_path = tcb_file_path + ".bin"
@@ -52,9 +54,6 @@ d2 = np.zeros(
     , dtype=np.ubyte
 )
 
-# for row in voxels:
-#     d2[row[0].astype(int), row[1].astype(int), row[2].astype(int), 0] = int(row[3]*255)
-
 voxels[:, 3] = voxels[:, 3] * 255
 
 voxelsint = voxels.astype(np.ubyte)
@@ -69,6 +68,11 @@ d2[..., 2] = d2[..., 0]
 d2[..., 3] = d2[..., 0]
 d2[..., 3] = (d2[..., 3].astype(float) / 255.)**2 * 255
 
+
+with open(tcb_file_path + ".pcl", "wb") as of:
+    pcl.dump(d2, of, pcl.HIGHEST_PROTOCOL)
+
+exit(0)
 
 
 app = QtGui.QApplication([])
