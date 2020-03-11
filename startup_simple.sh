@@ -4,7 +4,7 @@
 sudo apt-get install xorg-dev libglu1-mesa-dev
 sudo apt install libnlopt-dev
 
-pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPython yapf distro requests PyQt5
+pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPython yapf distro requests PyQt5 pyqtgraph
 pip3 install --user colorama numpy Pillow flask scipy pybind11 flask_cors GitPython yapf distro requests PyQt5
 
 if [ ! -f /content/intel_arch.tar ]; then
@@ -32,4 +32,21 @@ export PATH=/content/taichi/bin/:$PATH
 
 ln -s /content/gdrive/My\ Drive/topoopt/outputs /content/taichi/
 
-cd /content/taichi/projects/spgrid_topo_opt/scripts && python3 opt_bridge.py
+cd /content/taichi/projects/spgrid_topo_opt/scripts && python3 opt_bridge.py &> log.txt &
+
+#(
+#while true; do
+#  inotifywait -r -e modify,create,delete ./
+#  rsync -avz --exclude '.git' --filter=':- .gitignore' ~/MAVProxy nvidia@poliwhirl:~/slovak/
+#done
+#)
+
+inotifywait -m ./ -e create -e moved_to |
+    while read dir action file; do
+        echo "The file '$file' appeared in directory '$dir' via '$action'"
+        inotifywait -m $dir/$file/fem/ -e create -e moved_to |
+            while read dir action file; do
+                echo "The file '$file' appeared in directory '$dir' via '$action'"
+                /home/slovak/topoopt/taichi/projects/spgrid_topo_opt/scripts/parse_tcb.py $dir/$file
+            done
+    done

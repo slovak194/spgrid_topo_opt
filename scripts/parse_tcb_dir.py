@@ -2,6 +2,8 @@
 
 import sys
 import os
+import fnmatch
+import time
 
 import subprocess as sp
 import numpy as np
@@ -21,6 +23,26 @@ import pyqtgraph.opengl as gl
     # tcb_file_path = \
     #     "/home/slovak/topoopt/taichi/outputs/topo_opt/bridge/task-2020-03-11-10-30-51-r01108__v8_r0256/fem/00034.tcb.zip"
 # else:
+
+
+def find(pattern, path):
+    result = []
+    for root, dirs, files in os.walk(path):
+        for name in files:
+            if fnmatch.fnmatch(name, pattern):
+                result.append(os.path.join(root, name))
+    return result
+
+ress = set()
+
+while True:
+    res = find('*.tcb.zip', sys.argv[1])
+    diff = set(res).difference(ress)
+    if len(diff) > 0:
+        last = sorted(diff)[-1]
+        print(last)
+    ress = set(res)
+    time.sleep(2)
 
 tcb_file_path = sys.argv[1]
 

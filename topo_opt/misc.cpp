@@ -194,33 +194,49 @@ auto fem_to_dict = [](const std::vector<std::string> &parameters) {
 //  auto parent_dir = file_path.parent_path().parent_path();
   auto parent_dir = file_path.parent_path();
 
+#define BIN
+
+  std::ofstream of;
+
+#ifdef BIN
+  auto target_file_path_string = parent_dir.concat("/" + file_name_only.string() + ".bin").string();
+  of.open(target_file_path_string, std::ios::out | std::ios::binary);
+  std::vector<float> v;
+  v.reserve(param.density.blocks.size() * 64 * sizeof(float));
+#else
   auto target_file_path_string = parent_dir.concat("/" + file_name_only.string() + ".csv").string();
+  of.open(target_file_path_string, std::ios::out);
+#endif
 
   std::cout << target_file_path_string << std::endl;
 
-
-  std::ofstream of;
-  of.open(target_file_path_string);
-
   for (auto &block : param.density.blocks) {
-//    std::cout << "["
-//    << block.base_coordinates[0] << ", "
-//    << block.base_coordinates[1] << ", "
-//    << block.base_coordinates[2] << ", "
-//    << "]" << std::endl;
-
     int pn = 0;
-
     for (auto d : block.data) {
       auto p = patern[pn];
       pn += 1;
 
       if (d != 0) {
+#ifdef BIN
+        v.push_back(static_cast<float >(p[0] + block.base_coordinates[0]));
+        v.push_back(static_cast<float >(p[1] + block.base_coordinates[1]));
+        v.push_back(static_cast<float >(p[2] + block.base_coordinates[2]));
+        v.push_back(static_cast<float >(d));
+#else
         of
             << p[0] + block.base_coordinates[0] << ", "
             << p[1] + block.base_coordinates[1] << ", "
             << p[2] + block.base_coordinates[2] << ", "
             << d << std::endl;
+#endif
+
+
+//        of
+//            << p[0] + block.base_coordinates[0]
+//            << p[1] + block.base_coordinates[1]
+//            << p[2] + block.base_coordinates[2]
+//            << d;
+
 
         min_density = std::min(min_density, d);
         max_density = std::max(max_density, d);
@@ -229,11 +245,11 @@ auto fem_to_dict = [](const std::vector<std::string> &parameters) {
       }
     }
     nblocks += 1;
-//    if (nblocks > 3) {
-//      break;
-//    }
-//
   }
+
+#ifdef BIN
+  of.write((char *)&v[0], v.size() * sizeof(float));
+#endif
 
   of.close();
 
