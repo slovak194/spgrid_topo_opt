@@ -187,69 +187,59 @@ auto fem_to_dict = [](const std::vector<std::string> &parameters) {
   bool has_nan = false;
   bool has_inf = false;
 
-  int nblocks = 0;
-
   auto file_path = std::experimental::filesystem::path(file_name);
   auto file_name_only = file_path.filename();
 //  auto parent_dir = file_path.parent_path().parent_path();
   auto parent_dir = file_path.parent_path();
 
-#define BIN
-
   std::ofstream of;
 
-#ifdef BIN
   auto target_file_path_string = parent_dir.concat("/" + file_name_only.string() + ".bin").string();
   of.open(target_file_path_string, std::ios::out | std::ios::binary);
   std::vector<float> v;
   v.reserve(param.density.blocks.size() * 64 * sizeof(float));
-#else
-  auto target_file_path_string = parent_dir.concat("/" + file_name_only.string() + ".csv").string();
-  of.open(target_file_path_string, std::ios::out);
-#endif
 
   std::cout << target_file_path_string << std::endl;
 
+  int n_dense = 0;
+  int n_all = 0;
   for (auto &block : param.density.blocks) {
-    int pn = 0;
     for (auto d : block.data) {
-      auto p = patern[pn];
-      pn += 1;
-
-      if (d != 0) {
-#ifdef BIN
-        v.push_back(static_cast<float >(p[0] + block.base_coordinates[0]));
-        v.push_back(static_cast<float >(p[1] + block.base_coordinates[1]));
-        v.push_back(static_cast<float >(p[2] + block.base_coordinates[2]));
-        v.push_back(static_cast<float >(d));
-#else
-        of
-            << p[0] + block.base_coordinates[0] << ", "
-            << p[1] + block.base_coordinates[1] << ", "
-            << p[2] + block.base_coordinates[2] << ", "
-            << d << std::endl;
-#endif
-
-
-//        of
-//            << p[0] + block.base_coordinates[0]
-//            << p[1] + block.base_coordinates[1]
-//            << p[2] + block.base_coordinates[2]
-//            << d;
-
-
-        min_density = std::min(min_density, d);
-        max_density = std::max(max_density, d);
-        has_nan = std::isnan(d) || has_nan;
-        has_inf = std::isinf(d) || has_inf;
+      if (d > 0.0) {
+        n_all += 1;
+      }
+      if (d > 0.2) {
+        n_dense += 1;
       }
     }
-    nblocks += 1;
   }
 
-#ifdef BIN
-  of.write((char *)&v[0], v.size() * sizeof(float));
-#endif
+  float data_ratio = static_cast<float>(n_dense) / static_cast<float>(n_all);
+  TC_P(data_ratio);
+
+  if (data_ratio < 0.7) {
+    for (auto &block : param.density.blocks) {
+      int pn = 0;
+      for (auto d : block.data) {
+        auto p = patern[pn];
+        pn += 1;
+
+        if (d != 0) {
+          v.push_back(static_cast<float >(p[0] + block.base_coordinates[0]));
+          v.push_back(static_cast<float >(p[1] + block.base_coordinates[1]));
+          v.push_back(static_cast<float >(p[2] + block.base_coordinates[2]));
+          v.push_back(static_cast<float >(d));
+
+          min_density = std::min(min_density, d);
+          max_density = std::max(max_density, d);
+          has_nan = std::isnan(d) || has_nan;
+          has_inf = std::isinf(d) || has_inf;
+
+        }
+      }
+    }
+    of.write((char *)&v[0], v.size() * sizeof(float));
+  }
 
   of.close();
 
@@ -270,9 +260,6 @@ auto fem_to_dict = [](const std::vector<std::string> &parameters) {
     param.density.blocks.clear();
   }
 
-//  TextSerializer ser2;
-//  ser2("FEM Solve Parameters", param);
-//  ser2.write_to_file("human_readable.txt");
 };
 
 TC_REGISTER_TASK(fem_to_dict);
