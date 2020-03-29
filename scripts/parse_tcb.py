@@ -208,26 +208,8 @@ if __name__ == '__main__':
 exit(0)
 # %%
 
-# openscad -o 00173.tcb.zip.stl 00173.tcb.zip.scad
-# meshlab 00173.tcb.zip.stl
-# ~/Downloads/PrusaSlicer-2.2.0-rc3+linux-x64-202003111835.AppImage 00173.tcb.zip.stl
+# time ~/openscad/openscad -o /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-29-23-24-14-r07042__v8_r0400/fem/00047.tcb.zip.bin.stl /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-29-23-24-14-r07042__v8_r0400/fem/00047.tcb.zip.bin.scad
+# meshlabserver -i /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-28-22-24-03-r09329__v8_r0256/fem/00192.tcb.zip.bin.stl -o /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-28-22-24-03-r09329__v8_r0256/fem/00192.tcb.zip.bin.new2.stl -s /home/slovak/topoopt/taichi/projects/spgrid_topo_opt/scripts/modmesh.mlx
+# ~/Downloads/PrusaSlicer-2.2.0+linux-x64-202003211856.AppImage
 
 # cd ../../$(ls ../../ -t | head -1)/fem
-
-# %%import pyinotify
-#
-# class ModHandler(pyinotify.ProcessEvent):
-#     # evt has useful properties, including pathname
-#     def process_IN_CLOSE_WRITE(self, evt):
-#             webbrowser.open(URL)
-#
-# handler = ModHandler()
-# wm = pyinotify.WatchManager()
-# notifier = pyinotify.Notifier(wm, handler)
-# wdd = wm.add_watch(FILE, pyinotify.IN_CLOSE_WRITE)
-# notifier.loop()
-
-
-# %%
-
-
