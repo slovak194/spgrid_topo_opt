@@ -58,6 +58,9 @@ def pc2vox(pc, shaded=True, solid_iso_value=0.2):
         # vx[..., 2] = 255 - vx[..., 3]
 
         vx[vx[..., 3] < 255*solid_iso_value, 2] = 255 - vx[vx[..., 3] < 255*solid_iso_value, 3]
+        # vx[vx[..., 3] < 255*solid_iso_value, 0] = 0 #vx[vx[..., 3] < 255*solid_iso_value, 3]
+        # vx[vx[..., 3] < 255*solid_iso_value, 1] = 0 #vx[vx[..., 3] < 255*solid_iso_value, 3]
+        # (255/1 - vx[vx[..., 3] < 255*solid_iso_value, 3]/1).astype(np.ubyte)
 
     else:
         vx[..., 0] = vx[..., 3]
@@ -114,6 +117,11 @@ class Visualizer(gl.GLViewWidget):
         self.log_dir = log_dir
 
         self.show()
+        
+        self.ax = gl.GLAxisItem()
+        self.ax.setSize(100,100,100)
+        self.addItem(self.ax)
+
         self.v = gl.GLVolumeItem(np.zeros((10, 10, 10) + (4,), dtype=np.ubyte), smooth=False)
         self.addItem(self.v)
         self.setCameraPosition(azimuth=150, distance=150, elevation=0)

@@ -710,7 +710,7 @@ std::string SPGridTopologyOptimization3D::general_action(const Config &param) {
       Vector cell_center_pos = i2f(c.get_pos());
       bool failed = false;
       if (bounds[0] <= cell_center_pos && cell_center_pos <= bounds[1]) {
-        bool ret = add_cell_boundary(c.get_ipos(), "xyz", value);
+        bool ret = add_cell_boundary(c.get_ipos(), axis_to_fix, value);
         failed = failed || !ret;
       }
       if (failed) {
