@@ -208,8 +208,14 @@ if __name__ == '__main__':
 exit(0)
 # %%
 
-# time ~/openscad/openscad -o /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-29-23-24-14-r07042__v8_r0400/fem/00047.tcb.zip.bin.stl /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-29-23-24-14-r07042__v8_r0400/fem/00047.tcb.zip.bin.scad
+# time ~/openscad/openscad -o /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-30-22-10-03-r06510__v8_r0400/fem/00047.tcb.zip.bin.stl /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-30-22-10-03-r06510__v8_r0400/fem/00047.tcb.zip.bin.scad
+
+/home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-30-22-40-14-r04804__v8_r0400/fem/00044.tcb.zip
+
+
+
 # meshlabserver -i /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-28-22-24-03-r09329__v8_r0256/fem/00192.tcb.zip.bin.stl -o /home/slovak/topoopt/taichi/outputs/topo_opt/test/task-2020-03-28-22-24-03-r09329__v8_r0256/fem/00192.tcb.zip.bin.new2.stl -s /home/slovak/topoopt/taichi/projects/spgrid_topo_opt/scripts/modmesh.mlx
 # ~/Downloads/PrusaSlicer-2.2.0+linux-x64-202003211856.AppImage
 
 # cd ../../$(ls ../../ -t | head -1)/fem
+

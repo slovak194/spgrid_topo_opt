@@ -7,10 +7,10 @@ narrow_band = True
 plane_force = True
 volume_fraction = 0.2
 
-use_mirror = True
+use_mirror = False
 
 # Initialize
-n = 400
+n = 256
 #tc.core.set_core_trigger_gdb_when_crash(True);
 opt = TopoOpt(res=(n, n, n), version=version,
               volume_fraction=volume_fraction,
@@ -25,9 +25,9 @@ opt = TopoOpt(res=(n, n, n), version=version,
               fixed_cell_density=1
               )
 
-k = 1.5
+k = 1
 
-x, y, z = 0.15*k, 0.3*k, 0.1*k
+x, y, z = 1*k, 1*k, 1*k
 
 
 if use_mirror:
@@ -77,7 +77,7 @@ opt.populate_grid(domain_type='box', size=(x, y, z), mirror=mirror)
 # opt.add_load(center=(-x, 0, z), force=(0,  0,  -10), size=0.01)
 # opt.add_load(center=(0, -y, z), force=(0,  0,  -10), size=0.01)
 
-opt.add_plane_load(force=(0, 0, 10), axis=2, extreme=-1)
+# opt.add_plane_load(force=(0, 0, -10), axis=2, extreme=1)
 
 # opt.add_load(center=(0, y, z), force=(0,  -10,  0), size=0.01)
 # opt.add_load(center=(-x/4, y, z/2), force=(0,  -10,  0), size=0.01)
@@ -102,11 +102,20 @@ opt.add_plane_load(force=(0, 0, 10), axis=2, extreme=-1)
 # opt.add_dirichlet_bc((-x, y, -z), radius=0.01, axis='xyz', value=(0, 0, 0))
 # opt.add_dirichlet_bc((x, -y, -z), radius=0.01, axis='xyz', value=(0, 0, 0))
 
-rod_size = 0.05
-# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='xyz', bound0=(x, y, -z), bound1=(x-rod_size, y-rod_size, -z+rod_size))
-# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='xyz', bound0=(-x, y, -z), bound1=(-x+rod_size, y-rod_size, -z+rod_size))
-# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='xyz', bound0=(x, -y, -z), bound1=(x-rod_size, -y+rod_size, -z+rod_size))
-opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='z', bound0=(-x, -y, -z), bound1=(0, -y+rod_size, -z+rod_size))
+
+
+opt.add_dirichlet_bc((0.84075976, -0.08940331, 0.02817660), radius=0.01, axis='xyz', value=(0, 0, 0))
+
+opt.add_load(center=(0.84054296, -0.05227500, 0.00000000), force=(0,  -10,  0), size=0.01)
+opt.add_load(center=(0.80227500, -0.09054296, 0.00000000), force=(0,  -10,  0), size=0.01)
+
+
+# rod_size = 0.01
+# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='z', bound0=(x-rod_size, y-rod_size, -z), bound1=(x, y, -z+rod_size))
+# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='z', bound0=(-x, y-rod_size, -z), bound1=(-x+rod_size, y, -z+rod_size))
+# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='z', bound0=(x-rod_size, -y, -z), bound1=(x, -y+rod_size, -z+rod_size))
+# opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='xyz', bound0=(-x, -y, -z), bound1=(-x+rod_size, -y+rod_size, -z+rod_size))
+
 # opt.general_action(action='add_box_dirichlet_bc', axis_to_fix='xyz', bound0=(-rod_size, -rod_size, -z), bound1=(rod_size, rod_size, -z+rod_size))
 
 # opt.add_dirichlet_bc((-x, -y, -z), radius=0.01, axis='xyz', value=(0, 0, 0))
